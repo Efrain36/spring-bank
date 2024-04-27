@@ -1,0 +1,445 @@
+{
+	"info": {
+		"_postman_id": "737759d9-6e84-4a32-8585-375fad1de977",
+		"name": "Spring-bank-test",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "18493846"
+	},
+	"item": [
+		{
+			"name": "Clientes",
+			"item": [
+				{
+					"name": "Crear cliente",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"function randomIdentification(minValue, maxValue, dataSet = '0123456789') {\r",
+									"    if (!minValue) {\r",
+									"        minValue = 10;\r",
+									"        maxValue = 10;\r",
+									"    }\r",
+									"\r",
+									"    if (!maxValue) {\r",
+									"        maxValue = minValue;\r",
+									"    }\r",
+									"\r",
+									"    let length = _.random(minValue, maxValue),\r",
+									"        randomIdentification = \"\";\r",
+									"\r",
+									"    for (let i = 0; i < length; i++)\r",
+									"        randomIdentification += dataSet.charAt(Math.floor(Math.random() * dataSet.length));\r",
+									"    return randomIdentification;\r",
+									"}\r",
+									"\r",
+									"pm.variables.set('randomIdentification', randomIdentification());"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);\r",
+									"postman.setEnvironmentVariable(\"createdClientId\", jsonData.id);\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"identification\": {{randomIdentification}},\r\n    \"name\": \"John Doe\",\r\n    \"gender\": \"MASCULINO\",\r\n    \"age\": 30,\r\n    \"address\": \"123 Main St, Anytown, Anywhere\",\r\n    \"phone\": \"+1234567890\",\r\n    \"password\": \"password123\",\r\n    \"status\": \"true\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://{{servidor}}:{{puerto}}/api/clientes",
+							"protocol": "http",
+							"host": [
+								"{{servidor}}"
+							],
+							"port": "{{puerto}}",
+							"path": [
+								"api",
+								"clientes"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Obtener cliente por id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://{{servidor}}:{{puerto}}/api/clientes/{{createdClientId}}",
+							"protocol": "http",
+							"host": [
+								"{{servidor}}"
+							],
+							"port": "{{puerto}}",
+							"path": [
+								"api",
+								"clientes",
+								"{{createdClientId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Obtener todos los clientes",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);\r",
+									"postman.setEnvironmentVariable(\"clientId\", jsonData[0].id);\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://{{servidor}}:{{puerto}}/api/clientes",
+							"protocol": "http",
+							"host": [
+								"{{servidor}}"
+							],
+							"port": "{{puerto}}",
+							"path": [
+								"api",
+								"clientes"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Editar cliente",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"function randomIdentification(minValue, maxValue, dataSet = '0123456789') {\r",
+									"    if (!minValue) {\r",
+									"        minValue = 10;\r",
+									"        maxValue = 10;\r",
+									"    }\r",
+									"\r",
+									"    if (!maxValue) {\r",
+									"        maxValue = minValue;\r",
+									"    }\r",
+									"\r",
+									"    let length = _.random(minValue, maxValue),\r",
+									"        randomIdentification = \"\";\r",
+									"\r",
+									"    for (let i = 0; i < length; i++)\r",
+									"        randomIdentification += dataSet.charAt(Math.floor(Math.random() * dataSet.length));\r",
+									"    return randomIdentification;\r",
+									"}\r",
+									"\r",
+									"pm.variables.set('randomIdentification', randomIdentification());"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"identification\": {{randomIdentification}},\r\n    \"name\": \"John Doe\",\r\n    \"gender\": \"MASCULINO\",\r\n    \"age\": 30,\r\n    \"address\": \"123 Main St, Anytown, Anywhere\",\r\n    \"phone\": \"+1234567890\",\r\n    \"status\": \"true\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://{{servidor}}:{{puerto}}/api/clientes/{{createdClientId}}",
+							"protocol": "http",
+							"host": [
+								"{{servidor}}"
+							],
+							"port": "{{puerto}}",
+							"path": [
+								"api",
+								"clientes",
+								"{{createdClientId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Eliminar cliente",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://{{servidor}}:{{puerto}}/api/clientes/{{createdClientId}}",
+							"protocol": "http",
+							"host": [
+								"{{servidor}}"
+							],
+							"port": "{{puerto}}",
+							"path": [
+								"api",
+								"clientes",
+								"{{createdClientId}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Cuentas",
+			"item": [
+				{
+					"name": "Crear Cuenta",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);\r",
+									"postman.setEnvironmentVariable(\"createdAccountId\", jsonData.id);\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"clientId\":{{clientId}},\r\n    \"balance\":0,\r\n    \"type\":\"CORRIENTE\",\r\n    \"status\": true\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://{{servidor}}:{{puerto}}/api/cuentas",
+							"protocol": "http",
+							"host": [
+								"{{servidor}}"
+							],
+							"port": "{{puerto}}",
+							"path": [
+								"api",
+								"cuentas"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Obtener cuenta por id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://{{servidor}}:{{puerto}}/api/cuentas/{{createdAccountId}}",
+							"protocol": "http",
+							"host": [
+								"{{servidor}}"
+							],
+							"port": "{{puerto}}",
+							"path": [
+								"api",
+								"cuentas",
+								"{{createdAccountId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Eliminar cuenta",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://{{servidor}}:{{puerto}}/api/cuentas/{{createdAccountId}}",
+							"protocol": "http",
+							"host": [
+								"{{servidor}}"
+							],
+							"port": "{{puerto}}",
+							"path": [
+								"api",
+								"cuentas",
+								"{{createdAccountId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Generar reporte de cuenta",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"let currentDate = new Date();\r",
+									"let year = currentDate.getFullYear();\r",
+									"let month = (\"0\" + (currentDate.getMonth() + 1)).slice(-2); \r",
+									"let day = (\"0\" + currentDate.getDate()).slice(-2);\r",
+									"postman.setEnvironmentVariable(\"today\", `${year}-${month}-${day}`);\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://{{servidor}}:{{puerto}}/api/cuentas/reportes?clientId={{clientId}}&startDate={{today}}&endDate={{today}}",
+							"protocol": "http",
+							"host": [
+								"{{servidor}}"
+							],
+							"port": "{{puerto}}",
+							"path": [
+								"api",
+								"cuentas",
+								"reportes"
+							],
+							"query": [
+								{
+									"key": "clientId",
+									"value": "{{clientId}}"
+								},
+								{
+									"key": "startDate",
+									"value": "{{today}}"
+								},
+								{
+									"key": "endDate",
+									"value": "{{today}}"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Movimientos",
+			"item": [
+				{
+					"name": "Crear movimiento",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);\r",
+									"postman.setEnvironmentVariable(\"createdTransactionId\", jsonData.id);"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n   \"amount\":100,\r\n   \"accountId\":{{createdAccountId}}\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://{{servidor}}:{{puerto}}/api/movimientos",
+							"protocol": "http",
+							"host": [
+								"{{servidor}}"
+							],
+							"port": "{{puerto}}",
+							"path": [
+								"api",
+								"movimientos"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Obtener movimiento por Id",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);\r",
+									"postman.setEnvironmentVariable(\"createdTransactionId\", jsonData.id);"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://{{servidor}}:{{puerto}}/api/movimientos/{{createdTransactionId}}",
+							"protocol": "http",
+							"host": [
+								"{{servidor}}"
+							],
+							"port": "{{puerto}}",
+							"path": [
+								"api",
+								"movimientos",
+								"{{createdTransactionId}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
